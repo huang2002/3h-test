@@ -19,7 +19,9 @@ export class TestContext implements TestContextOptions {
     static checkPendingLabels(context: TestContext) {
         const { pendingLabels } = context;
         if (pendingLabels.size) {
-            const labels = [...pendingLabels.values()].join(', ');
+            const labels = Array.from(pendingLabels.values())
+                .map(label => `"${label}"`)
+                .join(', ');
             context.throw(`pending label(s) detected: ${labels}`);
         }
     }
