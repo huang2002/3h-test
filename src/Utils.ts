@@ -1,5 +1,8 @@
 export namespace Utils {
-
+    /** dts2md break */
+    /**
+     * Tells whether `a` and `b` are shallowly equal
+     */
     export const compare = (a: unknown, b: unknown): boolean => {
 
         if (Object.is(a, b)) {

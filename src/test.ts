@@ -1,16 +1,21 @@
 import { TestContext, TestContextOptions } from './TestContext';
 
 export type TestCaseCallback = (context: TestContext) => void;
-
+/** dts2md break */
 export interface TestCaseDescription {
     options: TestContextOptions;
     callback: TestCaseCallback;
 }
-
+/** dts2md break */
 export interface TestCases {
     [name: string]: TestCaseCallback | TestCaseDescription;
 }
-
+/** dts2md break */
+/**
+ * Run given tests and print results to console
+ * (note that the options in the test case description
+ * will override the default options directly)
+ */
 export const test = async (
     defaultOptions: TestContextOptions | null,
     testCases: TestCases

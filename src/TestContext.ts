@@ -1,14 +1,21 @@
 import { Utils } from './Utils';
 
 export class AssertionError extends Error { }
-
+/** dts2md break */
 export interface TestContextOptions {
     timeout: number;
     verbose: boolean;
 }
-
+/** dts2md break */
+/**
+ * (Usually created internally and passed to test case callbacks)
+ */
 export class TestContext implements TestContextOptions {
-
+    /** dts2md break */
+    /**
+     * Assert there are not more pending labels in the given context
+     * (usually used internally)
+     */
     static checkPendingLabels(context: TestContext) {
         const { pendingLabels } = context;
         if (pendingLabels.size) {
@@ -16,27 +23,63 @@ export class TestContext implements TestContextOptions {
             context.throw(`pending label(s) detected: ${labels}`);
         }
     }
-
+    /** dts2md break */
+    /**
+     * @param options Default context options
+     */
     constructor(options?: Partial<TestContextOptions> | null) {
         if (options) {
             Object.assign(this, options);
         }
     }
-
+    /** dts2md break */
+    /**
+     * Maximum timeout in milliseconds
+     * (After this limit, the context will check whether
+     * there are remaining pending labels left by asynchronous
+     * operations and report existing labels as an error)
+     * @default 5000
+     */
     timeout = 5000;
+    /** dts2md break */
+    /**
+     * Whether to print entire errors or just error messages
+     * (used by `this.throw`)
+     * @default true
+     */
     verbose = true;
-
+    /** dts2md break */
+    /**
+     * Whether the test case is finished
+     * (assigned internally)
+     */
     finished = false;
+    /** dts2md break */
+    /**
+     * Count of raised errors
+     */
     errorCount = 0;
+    /** dts2md break */
+    /**
+     * (this should only be modified by
+     * `this.addPendingLabel` & `this.deletePendingLabel`)
+     */
     pendingLabels = new Set<string>();
-
+    /** dts2md break */
+    /**
+     * A promise resolved when the test case is finished
+     */
     readonly promise = new Promise<void>(resolve => {
         this._resolvePromise = resolve;
     });
 
     private _resolvePromise!: () => void;
     private _pendingCheckTimer: any = null;
-
+    /** dts2md break */
+    /**
+     * Finish the test case
+     * (usually invoked internally and automatically)
+     */
     finish = () => {
         if (this.finished) {
             return;
@@ -49,13 +92,21 @@ export class TestContext implements TestContextOptions {
             this._pendingCheckTimer = null;
         }
     };
-
+    /** dts2md break */
+    /**
+     * Assert the test case is not finished
+     * (usually used internally)
+     */
     checkFinished() {
         if (this.finished) {
             this.throw('test context finished', false);
         }
     }
-
+    /** dts2md break */
+    /**
+     * Raise an error and invoke `this.checkFinished`
+     * unless the `checkFinished` parameter is `false`
+     */
     throw(message: string, checkFinished = true) {
         if (checkFinished) {
             this.checkFinished();
@@ -67,28 +118,41 @@ export class TestContext implements TestContextOptions {
                 : `AssertionError: ${message}`
         );
     }
-
+    /** dts2md break */
+    /**
+     * Assert the given condition is `true`
+     */
     assert(condition: boolean, message = 'assertion failed') {
         this.checkFinished();
         if (!condition) {
             this.throw(message);
         }
     }
-
+    /** dts2md break */
+    /**
+     * Assert `value == expected`
+     */
     assertEqual(value: unknown, expected: unknown) {
         this.checkFinished();
         if (value != expected) {
             this.throw(`${value} != ${expected}`);
         }
     }
-
+    /** dts2md break */
+    /**
+     * Assert `value === expected`
+     */
     assertStrictEqual(value: unknown, expected: unknown) {
         this.checkFinished();
         if (value !== expected) {
             this.throw(`${value} !== ${expected}`);
         }
     }
-
+    /** dts2md break */
+    /**
+     * Assert `value` and `expected` are shallowly equal
+     * (using `Utils.compare` internally)
+     */
     assertShallowEqual(
         value: unknown,
         expected: unknown,
@@ -99,7 +163,13 @@ export class TestContext implements TestContextOptions {
             this.throw(message);
         }
     }
-
+    /** dts2md break */
+    /**
+     * Assert the given callback to throw a specific type of error
+     * (when `errorType` is a string, assert the type of the raised error
+     * equals `errorType`; otherwise, assert the raised error is
+     * an instance of `errorType`)
+     */
     expectThrow<T extends any[], U>(
         callback: (this: U, ...args: T) => unknown,
         errorType: Function | string,
@@ -130,7 +200,11 @@ export class TestContext implements TestContextOptions {
         this.throw(`no error caught`);
 
     }
-
+    /** dts2md break */
+    /**
+     * Add a pending label
+     * (usually invoked internally)
+     */
     addPendingLabel(label: string) {
         this.checkFinished();
         const { pendingLabels } = this;
@@ -139,7 +213,11 @@ export class TestContext implements TestContextOptions {
         }
         pendingLabels.add(label);
     }
-
+    /** dts2md break */
+    /**
+     * Remove a pending label
+     * (usually invoked internally)
+     */
     deletePendingLabel(label: string) {
         const { pendingLabels } = this;
         if (pendingLabels.has(label)) {
@@ -151,7 +229,10 @@ export class TestContext implements TestContextOptions {
             this.throw(`unknown label "${label}"`);
         }
     }
-
+    /** dts2md break */
+    /**
+     * Set up pending check
+     */
     protected _setPendingCheck() {
         if (this._pendingCheckTimer !== null) {
             clearTimeout(this._pendingCheckTimer);
@@ -161,7 +242,15 @@ export class TestContext implements TestContextOptions {
             this.timeout,
         );
     }
-
+    /** dts2md break */
+    /**
+     * Expect the given promise to be resolved
+     * @param promise Target promise
+     * @param label A pending label for debug use
+     * @param callback A callback invoked with resolved
+     * data when the promise is resolved, which can be
+     * used to do some extra check on the data
+     */
     expectResolved<T>(
         promise: Promise<T>,
         label: string,
@@ -183,7 +272,15 @@ export class TestContext implements TestContextOptions {
             }
         );
     }
-
+    /** dts2md break */
+    /**
+     * Expect the given promise to be rejected
+     * @param promise Target promise
+     * @param label A pending label for debug use
+     * @param callback A callback invoked with rejected
+     * reason when the promise is rejected, which can be
+     * used to do some extra check on the reason
+     */
     expectRejected(
         promise: Promise<any>,
         label: string,
