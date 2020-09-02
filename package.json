@@ -1,6 +1,6 @@
 {
   "name": "3h-test",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple test lib.",
   "module": "./dist/3h-test.min.js",
   "main": "./dist/3h-test.umd.min.js",
