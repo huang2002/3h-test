@@ -193,11 +193,11 @@ export class TestContext implements TestContextOptions {
                 }
             }
 
-            this.throw(`incorrect error type`);
+            return this.throw(`unexpected error type`);
 
         }
 
-        this.throw(`no error caught`);
+        return this.throw(`no error caught`);
 
     }
     /** dts2md break */
