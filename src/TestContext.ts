@@ -45,8 +45,7 @@ export class TestContext implements TestContextOptions {
     timeout = 5000;
     /** dts2md break */
     /**
-     * Whether to print entire errors or just error messages
-     * (used by `this.throw`)
+     * Whether to print detailed error info
      * @default true
      */
     verbose = true;
@@ -163,6 +162,10 @@ export class TestContext implements TestContextOptions {
         this.checkFinished();
         if (!Utils.compare(value, expected)) {
             this.throw(message);
+            if (this.verbose) {
+                console.log('Expected:', expected);
+                console.log('Actual:', value);
+            }
         }
     }
     /** dts2md break */
@@ -183,6 +186,7 @@ export class TestContext implements TestContextOptions {
 
         try {
             callback.apply(thisArg!, args!);
+            this.throw('no error caught');
         } catch (error) {
 
             if (typeof errorType === 'function') {
@@ -195,11 +199,11 @@ export class TestContext implements TestContextOptions {
                 }
             }
 
-            return this.throw(`unexpected error type`);
+            this.throw(
+                `unexpected error type ${Object.prototype.toString.call(error)}`
+            );
 
         }
-
-        return this.throw(`no error caught`);
 
     }
     /** dts2md break */
@@ -211,7 +215,7 @@ export class TestContext implements TestContextOptions {
         this.checkFinished();
         const { pendingLabels } = this;
         if (pendingLabels.has(label)) {
-            this.throw('duplicate label');
+            this.throw(`duplicate label "${label}"`);
         }
         pendingLabels.add(label);
     }
