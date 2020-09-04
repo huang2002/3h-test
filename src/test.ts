@@ -26,7 +26,7 @@ export const test = async (
 
     for (const [name, testCase] of Object.entries(testCases)) {
 
-        console.log(`>>> Running test case "${name}":`);
+        console.log(`>>> Running test "${name}":`);
 
         let context, callback;
 
