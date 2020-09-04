@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+- Fix test info
+
 ## 0.2.0
 
 - Improve error info
