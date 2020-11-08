@@ -2,15 +2,15 @@ import { Utils } from './Utils';
 
 export class AssertionError extends Error { }
 /** dts2md break */
-export interface TestContextOptions {
+export type TestContextOptions = Partial<{
     timeout: number;
     verbose: boolean;
-}
+}>;
 /** dts2md break */
 /**
  * (Usually created internally and passed to test case callbacks)
  */
-export class TestContext implements TestContextOptions {
+export class TestContext implements Required<TestContextOptions> {
     /** dts2md break */
     /**
      * Assert there are not more pending labels in the given context
@@ -29,7 +29,7 @@ export class TestContext implements TestContextOptions {
     /**
      * @param options Default context options
      */
-    constructor(options?: Partial<TestContextOptions> | null) {
+    constructor(options?: TestContextOptions | null) {
         if (options) {
             Object.assign(this, options);
         }
