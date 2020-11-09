@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+- Add `testContext.assertJSONEqual`
+
 ## 0.2.2
 
 - Fix option type
