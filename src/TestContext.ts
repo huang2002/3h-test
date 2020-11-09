@@ -170,6 +170,27 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
+     * Assert `value` and `expected` are equal in JSON format
+     * (using `JSON.stringify` & `Utils.compare` internally)
+     */
+    assertJSONEqual(
+        value: unknown,
+        expected: unknown,
+        message = 'assertion failed',
+    ) {
+        this.checkFinished();
+        const actualJSON = JSON.stringify(value);
+        const expectedJSON = JSON.stringify(expected);
+        if (!Utils.compare(actualJSON, expectedJSON)) {
+            this.throw(message);
+            if (this.verbose) {
+                console.log('Expected:', expectedJSON);
+                console.log('Actual:', actualJSON);
+            }
+        }
+    }
+    /** dts2md break */
+    /**
      * Assert the given callback to throw a specific type of error
      * (when `errorType` is a string, assert the type of the raised error
      * equals `errorType`; otherwise, assert the raised error is

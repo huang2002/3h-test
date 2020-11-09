@@ -31,6 +31,11 @@ T.test({
         context.assertShallowEqual(a, b);
     },
 
+    assertJSONEqual(context) {
+        context.assertJSONEqual([[0, 1], [2, 3]], [[0, 1], [2, 3]]);
+        context.assertJSONEqual({ a: 0, b: { c: 1 } }, { a: 0, b: { c: 1 } });
+    },
+
     expectThrow(context) {
         class TestError extends Error { }
         const throwFn = error => { throw error; };
@@ -78,4 +83,6 @@ T.test({
         },
     },
 
+}).then(() => {
+    console.log('    (Expect: passed 5/9)');
 });
