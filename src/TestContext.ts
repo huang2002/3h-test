@@ -4,7 +4,6 @@ export class AssertionError extends Error { }
 /** dts2md break */
 export type TestContextOptions = Partial<{
     timeout: number;
-    verbose: boolean;
 }>;
 /** dts2md break */
 /**
@@ -43,12 +42,6 @@ export class TestContext implements Required<TestContextOptions> {
      * @default 5000
      */
     timeout = 5000;
-    /** dts2md break */
-    /**
-     * Whether to print detailed error info
-     * @default true
-     */
-    verbose = true;
     /** dts2md break */
     /**
      * Whether the test case is finished
@@ -113,11 +106,8 @@ export class TestContext implements Required<TestContextOptions> {
             this.checkFinished();
         }
         this.errorCount++;
-        console.error(
-            this.verbose
-                ? new AssertionError(message)
-                : `AssertionError: ${message}`
-        );
+        console.error(new AssertionError(message));
+        console.log();
     }
     /** dts2md break */
     /**
@@ -162,10 +152,8 @@ export class TestContext implements Required<TestContextOptions> {
         this.checkFinished();
         if (!Utils.compare(value, expected)) {
             this.throw(message);
-            if (this.verbose) {
-                console.log('Expected:', expected);
-                console.log('Actual:', value);
-            }
+            console.log('Expected:', expected);
+            console.log('Actual:', value);
         }
     }
     /** dts2md break */
@@ -183,10 +171,8 @@ export class TestContext implements Required<TestContextOptions> {
         const expectedJSON = JSON.stringify(expected);
         if (!Utils.compare(actualJSON, expectedJSON)) {
             this.throw(message);
-            if (this.verbose) {
-                console.log('Expected:', expectedJSON);
-                console.log('Actual:', actualJSON);
-            }
+            console.log('Expected:', expectedJSON);
+            console.log('Actual:', actualJSON);
         }
     }
     /** dts2md break */
