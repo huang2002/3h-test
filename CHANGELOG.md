@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+- Add `TestOptions`
+- Remove `testContextOptions.verbose`
+
 ## 0.3.0
 
 - Add `testContext.assertJSONEqual`
