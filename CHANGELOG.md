@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0
+
+- Add `Utils.compareDeeply`
+- Add `testContext.assertDeepEqual`
+
 ## 0.4.0
 
 - Add `TestOptions`
