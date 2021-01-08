@@ -40,6 +40,15 @@ T.test({
             context.assertJSONEqual({ a: 0, b: { c: 1 } }, { a: 0, b: { c: 1 } });
         },
 
+        assertDeepEqual(context) {
+            context.assertDeepEqual([[0, 1], [2, 3]], [[0, 1], [2, 3]]);
+            context.assertDeepEqual({ a: 0, b: { c: 1 } }, { a: 0, b: { c: 1 } });
+            context.assertDeepEqual({ a: 0, b: { c: 1 } }, { b: { c: 1 }, a: 0 });
+            const o = {};
+            o.o = o;
+            context.assertDeepEqual(o, { o });
+        },
+
         expectThrow(context) {
             class TestError extends Error { }
             const throwFn = error => { throw error; };
@@ -90,5 +99,5 @@ T.test({
     });
 
 }).then(() => {
-    console.log('    (Expect: passed 5/8)');
+    console.log('    (Expect: passed 6/9)');
 });

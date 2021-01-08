@@ -158,6 +158,23 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
+     * Assert `value` and `expected` are deeply equal
+     * (using `Utils.compareDeeply` internally)
+     */
+    assertDeepEqual(
+        value: unknown,
+        expected: unknown,
+        message = 'assertion failed',
+    ) {
+        this.checkFinished();
+        if (!Utils.compareDeeply(value, expected)) {
+            this.throw(message);
+            console.log('Expected:', expected);
+            console.log('Actual:', value);
+        }
+    }
+    /** dts2md break */
+    /**
      * Assert `value` and `expected` are equal in JSON format
      * (using `JSON.stringify` & `Utils.compare` internally)
      */
