@@ -59,6 +59,9 @@ export class TestContext implements Required<TestContextOptions> {
      * `this.addPendingLabel` & `this.deletePendingLabel`)
      */
     pendingLabels = new Set<string>();
+
+    private _resolvePromise!: () => void;
+    private _pendingCheckTimer: any = null;
     /** dts2md break */
     /**
      * A promise resolved when the test case is finished
@@ -66,9 +69,6 @@ export class TestContext implements Required<TestContextOptions> {
     readonly promise = new Promise<void>(resolve => {
         this._resolvePromise = resolve;
     });
-
-    private _resolvePromise!: () => void;
-    private _pendingCheckTimer: any = null;
     /** dts2md break */
     /**
      * Finish the test case
