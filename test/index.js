@@ -1,4 +1,4 @@
-const T = require('..');
+const T = require('../dist/3h-test.umd.js');
 
 T.test({
     verbose: false,
