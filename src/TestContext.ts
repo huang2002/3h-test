@@ -200,8 +200,8 @@ export class TestContext implements Required<TestContextOptions> {
      * an instance of `errorType`)
      */
     expectThrow<T extends any[], U>(
-        callback: (this: U, ...args: T) => unknown,
         errorType: Function | string,
+        callback: (this: U, ...args: T) => any,
         args?: T,
         thisArg?: U,
     ) {

@@ -52,8 +52,8 @@ T.test({
         expectThrow(context) {
             class TestError extends Error { }
             const throwFn = error => { throw error; };
-            context.expectThrow(throwFn, TestError, [new TestError()]);
-            context.expectThrow(throwFn, 'string', ['test message']);
+            context.expectThrow(TestError, throwFn, [new TestError()]);
+            context.expectThrow('string', throwFn, ['test message']);
         },
 
         expectResolved(context) {
