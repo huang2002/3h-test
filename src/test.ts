@@ -1,32 +1,44 @@
 import { TestContext, TestContextOptions } from './TestContext';
 
+/**
+ * Type of test case callbacks.
+ */
 export type TestCaseCallback = (context: TestContext) => void;
 /** dts2md break */
+/**
+ * Type of test case descriptions.
+ */
 export interface TestCaseDescription {
     options: TestContextOptions;
     callback: TestCaseCallback;
 }
 /** dts2md break */
+/**
+ * Type of test cases.
+ */
 export interface TestCases {
     [name: string]: TestCaseCallback | TestCaseDescription;
 }
 /** dts2md break */
+/**
+ * Type of test options.
+ */
 export type TestOptions = Partial<{
     /**
-     * Default options for test contexts
+     * Default options for test contexts.
      */
     defaultOptions: TestContextOptions | null;
     /**
-      * Whether to print more info
+      * Whether to print detailed info.
       * @default true
       */
     verbose: boolean;
 }>;
 /** dts2md break */
 /**
- * Run given tests and print results to console
- * (note that the options in the test case description
- * will override the default options directly)
+ * Run the given tests and print results to console.
+ * (Note that the options in the test case description
+ * will override the default options.)
  */
 export const test = async (
     options: TestOptions | null,

@@ -1,7 +1,10 @@
+/**
+ * Namespace of utilities.
+ */
 export namespace Utils {
     /** dts2md break */
     /**
-     * Tells whether `a` and `b` are shallowly equal
+     * Tells whether `a` and `b` are shallowly equal.
      */
     export const compare = (a: unknown, b: unknown): boolean => {
 
@@ -36,7 +39,7 @@ export namespace Utils {
     };
     /** dts2md break */
     /**
-     * Tells whether `a` and `b` are deeply equal
+     * Tells whether `a` and `b` are deeply equal.
      * (supports circular reference)
      */
     export const compareDeeply = (a: unknown, b: unknown, cache?: Map<object, object>): boolean => {

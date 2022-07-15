@@ -1,18 +1,25 @@
 import { Utils } from './Utils';
 
+/**
+ * Class of assertion errors.
+ */
 export class AssertionError extends Error { }
 /** dts2md break */
+/**
+ * Type of context options.
+ */
 export type TestContextOptions = Partial<{
     timeout: number;
 }>;
 /** dts2md break */
 /**
+ * Class of test contexts.
  * (Usually created internally and passed to test case callbacks)
  */
 export class TestContext implements Required<TestContextOptions> {
     /** dts2md break */
     /**
-     * Assert there are not more pending labels in the given context
+     * Assert there are not pending labels in the given context.
      * (usually used internally)
      */
     static checkPendingLabels(context: TestContext) {
@@ -26,7 +33,7 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * @param options Default context options
+     * Constructor of {@link TestContext}.
      */
     constructor(options?: TestContextOptions | null) {
         if (options) {
@@ -35,28 +42,28 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Maximum timeout in milliseconds
+     * Maximum timeout in milliseconds.
      * (After this limit, the context will check whether
      * there are remaining pending labels left by asynchronous
-     * operations and report existing labels as an error)
+     * operations and report existing labels as an error.)
      * @default 5000
      */
     timeout = 5000;
     /** dts2md break */
     /**
-     * Whether the test case is finished
+     * Whether the test case is finished.
      * (assigned internally)
      */
     finished = false;
     /** dts2md break */
     /**
-     * Count of raised errors
+     * Count of raised errors.
      */
     errorCount = 0;
     /** dts2md break */
     /**
-     * (this should only be modified by
-     * `this.addPendingLabel` & `this.deletePendingLabel`)
+     * (this should be modified only by
+     * `this.addPendingLabel` & `this.deletePendingLabel`.)
      */
     pendingLabels = new Set<string>();
 
@@ -64,14 +71,14 @@ export class TestContext implements Required<TestContextOptions> {
     private _pendingCheckTimer: any = null;
     /** dts2md break */
     /**
-     * A promise resolved when the test case is finished
+     * A promise resolved when the test case is finished.
      */
     readonly promise = new Promise<void>(resolve => {
         this._resolvePromise = resolve;
     });
     /** dts2md break */
     /**
-     * Finish the test case
+     * Finish the test case.
      * (usually invoked internally and automatically)
      */
     finish = () => {
@@ -88,7 +95,7 @@ export class TestContext implements Required<TestContextOptions> {
     };
     /** dts2md break */
     /**
-     * Assert the test case is not finished
+     * Assert the test case is not finished.
      * (usually used internally)
      */
     checkFinished() {
@@ -99,7 +106,7 @@ export class TestContext implements Required<TestContextOptions> {
     /** dts2md break */
     /**
      * Raise an error and invoke `this.checkFinished`
-     * unless the `checkFinished` parameter is `false`
+     * unless the `checkFinished` parameter is `false`.
      */
     throw(message: string, checkFinished = true) {
         if (checkFinished) {
@@ -111,7 +118,7 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Assert the given condition is `true`
+     * Assert the given condition is `true`.
      */
     assert(condition: boolean, message = 'assertion failed') {
         this.checkFinished();
@@ -121,7 +128,7 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Assert `value == expected`
+     * Assert `value == expected`.
      */
     assertEqual(value: unknown, expected: unknown) {
         this.checkFinished();
@@ -131,7 +138,7 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Assert `value === expected`
+     * Assert `value === expected`.
      */
     assertStrictEqual(value: unknown, expected: unknown) {
         this.checkFinished();
@@ -141,7 +148,7 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Assert `value` and `expected` are shallowly equal
+     * Assert `value` and `expected` are shallowly equal.
      * (using `Utils.compare` internally)
      */
     assertShallowEqual(
@@ -158,7 +165,7 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Assert `value` and `expected` are deeply equal
+     * Assert `value` and `expected` are deeply equal.
      * (using `Utils.compareDeeply` internally)
      */
     assertDeepEqual(
@@ -175,8 +182,8 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Assert `value` and `expected` are equal in JSON format
-     * (using `JSON.stringify` & `Utils.compare` internally)
+     * Assert `value` and `expected` are equal in JSON format.
+     * (using `JSON.stringify` & `Utils.compare` internally.)
      */
     assertJSONEqual(
         value: unknown,
@@ -194,10 +201,10 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Assert the given callback to throw a specific type of error
+     * Assert the given callback to throw a specific type of error.
      * (when `errorType` is a string, assert the type of the raised error
      * equals `errorType`; otherwise, assert the raised error is
-     * an instance of `errorType`)
+     * an instance of `errorType`.)
      */
     expectThrow<T extends any[], U>(
         errorType: Function | string,
@@ -232,8 +239,7 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Add a pending label
-     * (usually invoked internally)
+     * Add a pending label.
      */
     addPendingLabel(label: string) {
         this.checkFinished();
@@ -245,8 +251,7 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Remove a pending label
-     * (usually invoked internally)
+     * Remove a pending label.
      */
     deletePendingLabel(label: string) {
         const { pendingLabels } = this;
@@ -261,7 +266,7 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Set up pending check
+     * Set up pending check.
      */
     protected _setPendingCheck() {
         if (this._pendingCheckTimer !== null) {
@@ -274,12 +279,12 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Expect the given promise to be resolved
-     * @param promise Target promise
-     * @param label A pending label for debug use
+     * Expect the given promise to be resolved.
+     * @param promise Target promise.
+     * @param label A pending label for debug use.
      * @param callback A callback invoked with resolved
      * data when the promise is resolved, which can be
-     * used to do some extra check on the data
+     * used to do some extra check on the data.
      */
     expectResolved<T>(
         promise: Promise<T>,
@@ -304,12 +309,12 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Expect the given promise to be rejected
-     * @param promise Target promise
-     * @param label A pending label for debug use
+     * Expect the given promise to be rejected.
+     * @param promise Target promise.
+     * @param label A pending label for debug use.
      * @param callback A callback invoked with rejected
      * reason when the promise is rejected, which can be
-     * used to do some extra check on the reason
+     * used to do some extra check on the reason.
      */
     expectRejected(
         promise: Promise<any>,
