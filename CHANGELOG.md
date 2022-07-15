@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0
+
+- Add `testContext.setTimeout`
+- Fix some internal issues
+- Improve docs
+
 ## 0.6.0
 
 - Improve `testContext.expectThrow`
