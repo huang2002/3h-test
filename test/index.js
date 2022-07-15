@@ -96,8 +96,25 @@ T.test({
             },
         },
 
+        setTimeout(context) {
+            let flag = false;
+            setTimeout(() => {
+                flag = true;
+            }, 100);
+            context.setTimeout(() => {
+                context.assertStrictEqual(flag, false);
+            }, 50, 'setTimeout_50');
+            context.setTimeout(() => {
+                context.assertStrictEqual(flag, true);
+                cancelExtraCheck();
+            }, 150, 'setTimeout_150');
+            const cancelExtraCheck = context.setTimeout(() => {
+                context.throw('this check should have been canceled');
+            }, 200, 'setTimeout_200');
+        },
+
     });
 
 }).then(() => {
-    console.log('    (Expect: passed 6/9)');
+    console.log('    (Expect: passed 7/10)');
 });

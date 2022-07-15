@@ -239,6 +239,19 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
+     * Set up pending check.
+     */
+    protected _setPendingCheck() {
+        if (this._pendingCheckTimer !== null) {
+            clearTimeout(this._pendingCheckTimer);
+        }
+        this._pendingCheckTimer = setTimeout(
+            this.finish,
+            this.timeout,
+        );
+    }
+    /** dts2md break */
+    /**
      * Add a pending label.
      */
     addPendingLabel(label: string) {
@@ -248,6 +261,7 @@ export class TestContext implements Required<TestContextOptions> {
             this.throw(`duplicate label "${label}"`);
         }
         pendingLabels.add(label);
+        this._setPendingCheck();
     }
     /** dts2md break */
     /**
@@ -266,19 +280,6 @@ export class TestContext implements Required<TestContextOptions> {
     }
     /** dts2md break */
     /**
-     * Set up pending check.
-     */
-    protected _setPendingCheck() {
-        if (this._pendingCheckTimer !== null) {
-            clearTimeout(this._pendingCheckTimer);
-        }
-        this._pendingCheckTimer = setTimeout(
-            this.finish,
-            this.timeout,
-        );
-    }
-    /** dts2md break */
-    /**
      * Expect the given promise to be resolved.
      * @param promise Target promise.
      * @param label A pending label for debug use.
@@ -293,7 +294,6 @@ export class TestContext implements Required<TestContextOptions> {
     ) {
         this.checkFinished();
         this.addPendingLabel(label);
-        this._setPendingCheck();
         promise.then(
             data => {
                 if (callback) {
@@ -323,7 +323,6 @@ export class TestContext implements Required<TestContextOptions> {
     ) {
         this.checkFinished();
         this.addPendingLabel(label);
-        this._setPendingCheck();
         promise.then(
             data => {
                 this.throw(`[${label}] promise resolved: ${data}`);
@@ -336,6 +335,35 @@ export class TestContext implements Required<TestContextOptions> {
                 this.deletePendingLabel(label);
             }
         );
+    }
+    /** dts2md break */
+    /**
+     * Invoke `callback` after specific milliseconds
+     * to do some tests later.
+     * @param callback The function to invoke.
+     * @param milliseconds Timeout in milliseconds.
+     * @param label A pending label for debug use.
+     * @returns A canceler function
+     * which can be used to cancel the invocation.
+     */
+    setTimeout(
+        callback: () => void,
+        milliseconds: number,
+        label: string,
+    ) {
+        this.checkFinished();
+        this.addPendingLabel(label);
+        const timeoutHandle = setTimeout(() => {
+            try {
+                callback();
+            } finally {
+                this.deletePendingLabel(label);
+            }
+        }, milliseconds);
+        return () => {
+            clearTimeout(timeoutHandle);
+            this.deletePendingLabel(label);
+        };
     }
 
 }
