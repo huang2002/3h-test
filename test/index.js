@@ -53,7 +53,14 @@ T.test({
             class TestError extends Error { }
             const throwFn = error => { throw error; };
             context.expectThrow(TestError, throwFn, [new TestError()]);
-            context.expectThrow('string', throwFn, ['test message']);
+            context.expectThrow(
+                'string',
+                throwFn,
+                ['test message'],
+                (error) => {
+                    context.assertStrictEqual(error, 'test message');
+                },
+            );
         },
 
         expectResolved(context) {

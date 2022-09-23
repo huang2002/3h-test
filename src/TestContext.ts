@@ -211,6 +211,7 @@ export class TestContext implements Required<TestContextOptions> {
         callback: (this: U, ...args: T) => any,
         args?: T,
         thisArg?: U,
+        errorCallback?: (error: unknown) => void,
     ) {
 
         this.checkFinished();
@@ -222,10 +223,12 @@ export class TestContext implements Required<TestContextOptions> {
 
             if (typeof errorType === 'function') {
                 if (error instanceof errorType) {
+                    errorCallback?.(error);
                     return;
                 }
             } else {
                 if (typeof error === errorType) {
+                    errorCallback?.(error);
                     return;
                 }
             }
