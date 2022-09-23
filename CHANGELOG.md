@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0
+
+- Add `errorCallback`
+
 ## 0.7.0
 
 - Add `testContext.setTimeout`
