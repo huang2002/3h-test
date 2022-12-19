@@ -3,7 +3,7 @@ import { TestContext, TestContextOptions } from './TestContext';
 /**
  * Type of test case callbacks.
  */
-export type TestCaseCallback = (context: TestContext) => void;
+export type TestCaseCallback = (context: TestContext) => void | PromiseLike<void>;
 /** dts2md break */
 /**
  * Type of test case descriptions.
@@ -66,7 +66,7 @@ export const test = async (
             callback = testCase.callback;
         }
 
-        callback(context);
+        await callback(context);
 
         if (context.pendingLabels.size) {
             await context.promise;

@@ -15,7 +15,7 @@ T.test({
 
         assertEqual(context) {
             context.assertEqual(1 * 2, 2);
-            context.assertEqual(NaN, NaN);
+            context.assertEqual(NaN, NaN); // expect: failure
         },
 
         assertStrictEqual: {
@@ -24,7 +24,7 @@ T.test({
             },
             callback(context) {
                 context.assertStrictEqual(1 + 2, 3);
-                context.assertStrictEqual(.1 + .2, .3);
+                context.assertStrictEqual(.1 + .2, .3); // expect: failure
             },
         },
 
@@ -63,8 +63,8 @@ T.test({
             );
         },
 
-        expectResolved(context) {
-            const testData = 666;
+        async expectResolved(context) {
+            const testData = await Promise.resolve(666);
             const promise = new Promise(resolve => {
                 setTimeout(resolve, 500, testData);
             });
@@ -72,7 +72,7 @@ T.test({
                 promise,
                 'promise to be resolved',
                 data => {
-                    context.assertStrictEqual(data, testData);
+                    context.assertStrictEqual(data, 666);
                 }
             );
         },
@@ -99,7 +99,7 @@ T.test({
                 const promise = new Promise(resolve => {
                     setTimeout(resolve, 1000);
                 });
-                context.expectResolved(promise, 'timeout test');
+                context.expectResolved(promise, 'timeout test'); // expect: failure
             },
         },
 
