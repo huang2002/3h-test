@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.0
+
+- Improve async support
+
 ## 0.8.0
 
 - Add `errorCallback`
