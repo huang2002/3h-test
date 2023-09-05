@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.10.0
+
+- Add `include` & `exclude` options.
+- Improve and fix test script.
+
 ## 0.9.0
 
 - Improve async support
