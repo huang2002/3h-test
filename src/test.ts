@@ -33,6 +33,15 @@ export type TestOptions = Partial<{
       * @default true
       */
     verbose: boolean;
+    /**
+     * Only run tests whose names are listed here.
+     * Omit this option to run all tests.
+     */
+    include: string[];
+    /**
+     * Skip tests whose names are listed here.
+     */
+    exclude: string[];
 }>;
 /** dts2md break */
 /**
@@ -45,12 +54,20 @@ export const test = async (
     testCases: TestCases
 ) => {
 
-    const verbose = !options || options.verbose !== false;
+    const verbose = !options || (options.verbose !== false);
     const defaultOptions = options && options.defaultOptions;
+    const include = options && options.include;
+    const exclude = options && options.exclude;
     let totalCount = 0;
     let passedCount = 0;
 
     for (const [name, testCase] of Object.entries(testCases)) {
+
+        if (include && !include.includes(name)) {
+            continue;
+        } else if (exclude && exclude.includes(name)) {
+            continue;
+        }
 
         if (verbose) {
             console.log(`>>> Running test "${name}":`);

@@ -15,7 +15,32 @@ T.test({
 
 }).then(() => {
 
-    return T.test(null, {
+    return T.test({
+        include: [
+            'skip_1',
+            'assertEqual',
+            'assertStrictEqual',
+            'assertShallowEqual',
+            'assertJSONEqual',
+            'assertDeepEqual',
+            'expectThrow',
+            'expectResolved',
+            'expectRejected',
+            'timeout',
+            'setTimeout',
+        ],
+        exclude: [
+            'skip_1',
+        ],
+    }, {
+
+        skip_0(context) {
+            context.throw('this should be skipped');
+        },
+
+        skip_1(context) {
+            context.throw('this should be skipped');
+        },
 
         assertEqual(context) {
             context.assertEqual(1 * 2, 2);
