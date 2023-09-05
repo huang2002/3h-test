@@ -1,4 +1,8 @@
-const T = require('../dist/3h-test.umd.js');
+// @ts-check
+
+const T = /** @type {import('..')} */(
+    /** @type unknown */(require('../dist/3h-test.umd.js'))
+);
 
 T.test({
     verbose: false,
@@ -18,14 +22,9 @@ T.test({
             context.assertEqual(NaN, NaN); // expect: failure
         },
 
-        assertStrictEqual: {
-            options: {
-                verbose: true,
-            },
-            callback(context) {
-                context.assertStrictEqual(1 + 2, 3);
-                context.assertStrictEqual(.1 + .2, .3); // expect: failure
-            },
+        assertStrictEqual(context) {
+            context.assertStrictEqual(1 + 2, 3);
+            context.assertStrictEqual(.1 + .2, .3); // expect: failure
         },
 
         assertShallowEqual(context) {
